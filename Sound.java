@@ -1,13 +1,12 @@
 import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
-
 import javafx.scene.media.AudioClip;
 
 /**
  * Sounds for the panel speakers, played from .mp3 files.
  *
- * If a file is missing or cannot be played, nothing is played and the panels keep working.
+ * If a file is missing or cannot be played, nothing is played.
  * Paths are relative to the folder the program is run from.
  */
 final class Sound {

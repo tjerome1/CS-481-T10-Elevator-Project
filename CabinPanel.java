@@ -16,9 +16,7 @@ import javafx.scene.shape.Rectangle;
  * Cabin panel.
  *
  * The panel only talks to the software bus. Button presses and key turns are published as
- * events. A pressed button lights up right away, but only a command turns it off.
- * The display and buzzer change only when a command arrives.
- * It never decides anything on its own.
+ * events.
  */
 public class CabinPanel extends VBox {
 
@@ -145,18 +143,18 @@ public class CabinPanel extends VBox {
         speaker.setSounding(on ? PanelParts.RED : null);
     }
 
-    // Events (panel to controller). A pressed button lights up right away.
+    // Events (panel to controller). A pressed button lights up.
 
     private void floorButtonPressed(int floor) {
         buttons[floor].setLit(true);
-        bus.publish(busId, new BusMessage(Pfd.CABIN_FLOOR_BUTTON_PRESSED, elevator, floor));
+        bus.publish(busId, new SoftwareBus.BusMessage(Pfd.CABIN_FLOOR_BUTTON_PRESSED, elevator, floor));
     }
 
     private void keySwitchMode(Pfd.KeyPosition mode) {
-        bus.publish(busId, new BusMessage(Pfd.CABIN_KEY_SWITCH, elevator, mode.ordinal()));
+        bus.publish(busId, new SoftwareBus.BusMessage(Pfd.CABIN_KEY_SWITCH, elevator, mode.ordinal()));
     }
 
-    private void handle(BusMessage m) {
+    private void handle(SoftwareBus.BusMessage m) {
         switch (m.topic()) {
             case Pfd.CABIN_SET_FLOOR -> setFloor(m.body());
             case Pfd.CABIN_SET_DIRECTION -> {
@@ -189,7 +187,7 @@ public class CabinPanel extends VBox {
         return buttons[floor];
     }
 
-    /** Key cylinder marked N (normal) and M (manual). Clicking it turns the key to the other side. */
+    /** Key slot marked N (normal) and M (manual). Clicking it turns the key to the other side. */
     private Node keySwitch(double radius) {
         Circle bezel = new Circle(radius);
         bezel.setFill(Color.web("#f4f4f4"));

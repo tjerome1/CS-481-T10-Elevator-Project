@@ -1,7 +1,6 @@
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
-
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -16,11 +15,9 @@ import javafx.stage.Stage;
 
 /**
  * Starts the software bus and the test harness. The hall panel and each cabin panel are
- * opened in their own windows from the console (type "help" for the commands).
+ * opened in their own windows from the console, or all four cabin panels can share one
+ * window (type "help" for the commands).
  *
- * Compile and run with a JDK that includes JavaFX:
- *   javac -d out *.java
- *   java -cp out Main
  */
 public class Main extends Application implements TestHarness.Windows {
 
@@ -43,6 +40,11 @@ public class Main extends Application implements TestHarness.Windows {
     public void openCabin(int elevator) {
         Platform.runLater(() -> show("cabin " + elevator, elevator, "Cabin Panel - Elevator " + elevator,
                 () -> new CabinPanel(bus, elevator)));
+    }
+
+    @Override
+    public void openCabins() {
+        Platform.runLater(() -> show("cabins", 1, "Cabin Panels", () -> new CabinPanelSelector(bus, 1)));
     }
 
     @Override

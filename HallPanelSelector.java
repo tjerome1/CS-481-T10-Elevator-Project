@@ -1,7 +1,6 @@
 import javafx.geometry.Pos;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.scene.shape.Polyline;
 
 /**
  * Shows the hall panel for one floor at a time, with arrows on each side of the
@@ -18,8 +17,8 @@ public class HallPanelSelector extends StackPane {
             getChildren().add(panels[floor]);
         }
 
-        PanelParts.RoundButton previous = new PanelParts.RoundButton(28, arrow(false), () -> step(-1));
-        PanelParts.RoundButton next = new PanelParts.RoundButton(28, arrow(true), () -> step(1));
+        PanelParts.RoundButton previous = new PanelParts.RoundButton(28, PanelParts.hallArrow(false), () -> step(-1));
+        PanelParts.RoundButton next = new PanelParts.RoundButton(28, PanelParts.hallArrow(true), () -> step(1));
         HBox arrows = new HBox(442, previous, next);
         arrows.setAlignment(Pos.CENTER);
         arrows.setPrefHeight(HallPanel.HEADER_HEIGHT);
@@ -42,14 +41,5 @@ public class HallPanelSelector extends StackPane {
     /** Moves up or down a floor, wrapping around from 10 back to 1. */
     private void step(int by) {
         show((shown - 1 + by + Pfd.FLOORS) % Pfd.FLOORS + 1);
-    }
-
-    private static Polyline arrow(boolean right) {
-        Polyline arrow = right
-                ? new Polyline(0, 0, 9, 10, 0, 20)
-                : new Polyline(9, 0, 0, 10, 9, 20);
-        arrow.setStroke(PanelParts.TEXT);
-        arrow.setStrokeWidth(2.5);
-        return arrow;
     }
 }

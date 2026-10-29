@@ -12,10 +12,9 @@ import javafx.util.Duration;
 
 /**
  * Hall panel. It combines the hall displays and the hall call buttons: one row per elevator,
- *  then the speaker, up and down buttons, and fire alarm button. A pressed button lights up
- *  right away, but only a command turns it off.
+ * then the speaker, up and down buttons, and fire alarm button. A pressed button lights up,
+ * but only a command turns it off.
  *
- * Like the cabin panel, it only talks to the software bus and never decides anything on its own.
  */
 public class HallPanel extends VBox {
 
@@ -154,20 +153,20 @@ public class HallPanel extends VBox {
 
     private void upButtonPressed() {
         upButton.setLit(true);
-        bus.publish(busId, new BusMessage(Pfd.HALL_UP_BUTTON_PRESSED, floor, 0));
+        bus.publish(busId, new SoftwareBus.BusMessage(Pfd.HALL_UP_BUTTON_PRESSED, floor, 0));
     }
 
     private void downButtonPressed() {
         downButton.setLit(true);
-        bus.publish(busId, new BusMessage(Pfd.HALL_DOWN_BUTTON_PRESSED, floor, 0));
+        bus.publish(busId, new SoftwareBus.BusMessage(Pfd.HALL_DOWN_BUTTON_PRESSED, floor, 0));
     }
 
     private void fireAlarmPressed() {
         setFireLight(true);
-        bus.publish(busId, new BusMessage(Pfd.HALL_FIRE_ALARM_PRESSED, floor, 0));
+        bus.publish(busId, new SoftwareBus.BusMessage(Pfd.HALL_FIRE_ALARM_PRESSED, floor, 0));
     }
 
-    private void handle(BusMessage m) {
+    private void handle(SoftwareBus.BusMessage m) {
         switch (m.topic()) {
             case Pfd.HALL_SET_ELEVATOR_FLOOR -> setElevatorFloor(m.subtopic(), m.body());
             case Pfd.HALL_SET_ELEVATOR_DIRECTION -> {

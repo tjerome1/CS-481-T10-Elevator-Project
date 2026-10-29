@@ -17,6 +17,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
+import javafx.scene.shape.Polyline;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 
@@ -81,14 +82,33 @@ final class PanelParts {
         arrow.setFill(lit ? BLUE : GRAY);
     }
 
+    /** Left or right arrow for the buttons that switch floors on the hall panel. */
+    static Polyline hallArrow(boolean right) {
+        return switchArrow(right);
+    }
+
+    /** Left or right arrow for the buttons that switch elevators on the cabin panel. */
+    static Polyline cabinArrow(boolean right) {
+        return switchArrow(right);
+    }
+
+    private static Polyline switchArrow(boolean right) {
+        Polyline arrow = right
+                ? new Polyline(0, 0, 9, 10, 0, 20)
+                : new Polyline(9, 0, 0, 10, 9, 20);
+        arrow.setStroke(TEXT);
+        arrow.setStrokeWidth(2.5);
+        return arrow;
+    }
+
     /** Polls the bus for the given topics on the JavaFX thread and hands each message to the handler. */
-    static void listen(SoftwareBus bus, int id, int subtopic, Consumer<BusMessage> handler, int... topics) {
+    static void listen(SoftwareBus bus, int id, int subtopic, Consumer<SoftwareBus.BusMessage> handler, int... topics) {
         for (int topic : topics) {
             bus.subscribe(id, topic, subtopic);
         }
         Timeline poll = new Timeline(new KeyFrame(Duration.millis(30), e -> {
             for (int topic : topics) {
-                BusMessage message;
+                SoftwareBus.BusMessage message;
                 while ((message = bus.getMessage(id, topic, subtopic)) != null) {
                     handler.accept(message);
                 }

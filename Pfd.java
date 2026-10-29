@@ -1,15 +1,15 @@
 /**
- * Values and bus topics used by the passenger facing devices (PFD document, sections 2.3 and 3.3).
+ * Values and bus topics used by the passenger facing devices.
  *
  * Every command and event in the document's APIs has a topic here. The topic numbers are
- * placeholders until the full system assigns its own; changing them here is all it takes.
+ * placeholders until the full system assigns its own; change them here.
  */
 public final class Pfd {
 
     public static final int FLOORS = 10;
     public static final int ELEVATORS = 4;
 
-    // Sent in a message body as their ordinal
+    // Sent in a message body as their direction
     public enum Direction { NONE, UP, DOWN }
 
     public enum KeyPosition { NORMAL, MANUAL }
